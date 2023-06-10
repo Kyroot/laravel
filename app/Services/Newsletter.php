@@ -33,5 +33,4 @@ class Newsletter{
             'server' => 'us21'
         ]);
     }
-
 }

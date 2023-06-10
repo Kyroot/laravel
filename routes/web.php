@@ -24,7 +24,6 @@ Route::post('login', [SessionController::class, 'store'])->middleware('guest');
 
 Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth');
 
-
 Route::middleware("can:admin")->group(function(){
 
     Route::get('admin/posts/create', [AdminPostController::class, 'create']);

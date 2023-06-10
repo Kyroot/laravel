@@ -35,6 +35,10 @@ return [
         'key' => env('MAILCHIMP_KEY'),
         'lists' => [
             'subscribers' => 'd2780ee2a3'
-        ]
+            ]
+        ],
+
+    'perspective' => [
+        'key' => env('PERSPECTIVE_API'),
     ]
 ];

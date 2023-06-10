@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Http\Request;
+use App\Services\Perspective;
 
 class PostCommentsController extends Controller
 {
@@ -13,12 +13,30 @@ class PostCommentsController extends Controller
             'body' => 'required',
         ]);
 
-        //add a comment to a given post
-        $post->comments()->create([
-            'user_id' => auth()->id(),
-            'body' => request('body')
-        ]);
+        $comment = request('body');
 
-        return back();
+        $perspectiveResponse = Perspective::cURLperspective($comment, 'spam');
+
+
+        if(isset($perspectiveResponse['attributeScores']['SPAM'])){
+            $spanScores = $perspectiveResponse['attributeScores']['SPAM'];
+
+            if(isset($spanScores['spanScores'])){
+                $spanScores = $spanScores['spanScores'];
+
+                foreach($spanScores as $span){
+                    // dd($perspectiveResponse);
+                    if($span['score']['value'] <= 0.5){
+
+                    $post->comments()->create([
+                        'user_id' => auth()->id(),
+                        'body' => request('body')
+                    ]);
+
+                    }
+                }
+                return back();
+            }
+        }
     }
 }
